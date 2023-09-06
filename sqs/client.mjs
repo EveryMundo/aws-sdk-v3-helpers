@@ -20,4 +20,4 @@ const createSQSHelper = (SQSClientClass = SQSClient) => ({
 })
 
 export const sqs = createSQSHelper()
-export default { createSQSHelper, sqs }
+export default { createSQSHelper, sqs, client: sqs }

@@ -5,7 +5,7 @@ import { SendMessageCommand, SendMessageBatchCommand } from '@aws-sdk/client-sqs
 
 // import '../test-setup.js'
 // import * as lib from '../../lib/sqs-client.js'
-import lib from '../sqs/client.mjs'
+import lib from '../../sqs/client.mjs'
 
 describe('sqs/client.mjs', () => {
   let box

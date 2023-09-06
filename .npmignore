@@ -111,3 +111,6 @@ old_files/
 .gitignore
 output.txt
 test
+*.tar.gz
+*.tgz
+*.zip

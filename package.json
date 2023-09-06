@@ -1,21 +1,33 @@
 {
-  "name": "@everymundo/CHANGE-THIS-NAME",
+  "name": "@everymundo/aws-sdk-v3-helpers",
   "version": "0.0.0",
   "description": "",
   "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "env LOG_LEVEL=silent mocha test --recursive",
+    "cover": "env LOG_LEVEL=silent c8 -x test --reporter=lcov --reporter=text node_modules/mocha/bin/_mocha --recursive",
+    "check-coverage": "env LOG_LEVEL=silent c8 check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "check-lint": "standard",
+    "fix-lint": "standard --fix"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EveryMundo/CHANGE-THIS-NAME.git"
+    "url": "git+https://github.com/EveryMundo/aws-sdk-v3-helpers.git"
   },
   "keywords": [],
   "author": "Daniel Santana <git@danielsantan.net>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EveryMundo/CHANGE-THIS-NAME/issues"
+    "url": "https://github.com/EveryMundo/aws-sdk-v3-helpers/issues"
   },
-  "homepage": "https://github.com/EveryMundo/CHANGE-THIS-NAME#readme"
+  "homepage": "https://github.com/EveryMundo/aws-sdk-v3-helpers#readme",
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.405.0",
+    "@aws-sdk/client-sqs": "^3.405.0",
+    "c8": "^8.0.1",
+    "chai": "^4.3.8",
+    "mocha": "^10.2.0",
+    "sinon": "^15.2.0"
+  }
 }

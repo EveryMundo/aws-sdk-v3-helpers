@@ -20,6 +20,9 @@ const createSNSHelper = (SNSClientClass = SNSClient) => ({
 })
 
 export const sns = createSNSHelper()
+export const client = sns
+export const createHelper = createSNSHelper
+
 export default {
   createSNSHelper,
   sns,

@@ -20,6 +20,9 @@ const createS3Helper = (S3ClientClass = S3Client) => ({
 })
 
 export const s3 = createS3Helper()
+export const client = s3
+export const createHelper = createS3Helper
+
 export default {
   createS3Helper,
   s3,

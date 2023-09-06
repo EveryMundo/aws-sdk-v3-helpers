@@ -1,6 +1,6 @@
 import { SQSClient, SendMessageCommand, SendMessageBatchCommand } from '@aws-sdk/client-sqs'
 
-const createSQSHelper = (SQSClientClass = SQSClient) => ({
+export const createSQSHelper = (SQSClientClass = SQSClient) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {
@@ -20,4 +20,12 @@ const createSQSHelper = (SQSClientClass = SQSClient) => ({
 })
 
 export const sqs = createSQSHelper()
-export default { createSQSHelper, sqs, client: sqs }
+export const client = sqs
+export const createHelper = createSQSHelper
+
+export default {
+  createSQSHelper,
+  sqs,
+  client: sqs,
+  createHelper: createSQSHelper
+}

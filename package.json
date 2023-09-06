@@ -1,0 +1,21 @@
+{
+  "name": "@everymundo/CHANGE-THIS-NAME",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EveryMundo/CHANGE-THIS-NAME.git"
+  },
+  "keywords": [],
+  "author": "Daniel Santana <git@danielsantan.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EveryMundo/CHANGE-THIS-NAME/issues"
+  },
+  "homepage": "https://github.com/EveryMundo/CHANGE-THIS-NAME#readme"
+}

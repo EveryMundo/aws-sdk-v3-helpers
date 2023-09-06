@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 
 const createS3Helper = (S3ClientClass = S3Client) => ({
   _client: undefined,
@@ -16,6 +16,10 @@ const createS3Helper = (S3ClientClass = S3Client) => ({
 
   putObject (params) {
     return this.client.send(new PutObjectCommand(params))
+  },
+
+  headObject (params) {
+    return this.client.send(new HeadObjectCommand(params))
   }
 })
 

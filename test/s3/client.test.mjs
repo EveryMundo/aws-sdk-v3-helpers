@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { GetObjectCommand, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
+import { GetObjectCommand, PutObjectCommand, HeadObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { it, describe, beforeEach, afterEach } from 'mocha'
 
 const context = describe
@@ -84,6 +84,23 @@ describe('s3/client.mjs', () => {
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(HeadObjectCommand)
+        expect(firstInvocationArgs[0].input).to.deep.equal(params)
+      })
+    })
+  })
+
+  describe('#listObjectsV2', () => {
+    context('when called with VALID argument', () => {
+      it('should call client.send with the correct arguments', async () => {
+        const s3 = lib.createS3Helper()
+        const client = s3.client
+        const stub = box.stub(client, 'send')
+        const params = { some: 'params' }
+
+        await s3.listObjectsV2(params)
+        expect(stub.calledOnce).to.be.true
+        const [firstInvocationArgs] = stub.args
+        expect(firstInvocationArgs[0]).to.be.instanceof(ListObjectsV2Command)
         expect(firstInvocationArgs[0].input).to.deep.equal(params)
       })
     })

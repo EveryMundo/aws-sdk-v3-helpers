@@ -105,4 +105,23 @@ describe('s3/client.mjs', () => {
       })
     })
   })
+
+  describe('#readBody', () => {
+    context('when called with VALID argument', () => {
+      it('should read the stream', async () => {
+        const stream = await import('node:stream')
+        const passThroughStream = new stream.PassThrough()
+
+        const promise = lib.readBody(passThroughStream)
+
+        passThroughStream.write('hello ')
+        passThroughStream.write('world')
+        passThroughStream.end('!')
+
+        const res = await promise
+        expect(res).to.be.instanceof(Buffer)
+        expect(res.toString()).to.equal('hello world!')
+      })
+    })
+  })
 })

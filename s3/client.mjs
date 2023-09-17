@@ -33,6 +33,17 @@ const createS3Helper = (S3ClientClass = S3Client) => ({
   }
 })
 
+
+export async function readBody (streamBody) {
+  let buff = Buffer.from('')
+
+  for await (const chunk of streamBody) {
+    buff = Buffer.concat([buff, chunk])
+  }
+
+  return buff
+}
+
 export const s3 = createS3Helper()
 export const client = s3
 export const createHelper = createS3Helper
@@ -41,5 +52,6 @@ export default {
   createS3Helper,
   s3,
   client: s3,
-  createHelper: createS3Helper
+  createHelper: createS3Helper,
+  readBody
 }

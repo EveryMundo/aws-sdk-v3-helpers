@@ -8,7 +8,8 @@ const context = describe
 // import './test-setup.mjs'
 // import * as lib from '../../lib/s3-client.js'
 import * as lib from '../../s3/client.mjs'
-import { asynGzip } from '../../lib/zlib/gzip.mjs'
+import { asynGzip, asyncGunzip } from '../../lib/zipper.mjs'
+import exp from 'node:constants'
 
 describe('s3/client.mjs', () => {
   let box
@@ -107,10 +108,30 @@ describe('s3/client.mjs', () => {
     })
   })
 
+  describe('#gzipPutParams', () => {
+    context('when called with a single argument', () => {
+      it('should compress the body, set the header, add .gz to Key', async () => {
+        const params = {
+          Body: Buffer.from('hello world!'),
+          Key: 'test-key'
+        }
+
+        const res = await lib.gzipPutParams(params)
+        expect(res).to.have.property('Body')
+        expect(res).to.have.property('ContentEncoding', 'gzip')
+        expect(res).to.have.property('Key', 'test-key.gz')
+        expect(res.Body).to.have.property(0, 31)
+        expect(res.Body).to.have.property(1, 139)
+
+        const gunzippedBody = await asyncGunzip(res.Body)
+        expect(gunzippedBody.toString()).to.equal('hello world!')
+      })
+    })
+  })
+
   describe('#readBody', () => {
     context('when called with VALID argument', () => {
       it('should read the stream', async () => {
-        const stream = await import('node:stream')
         const passThroughStream = new stream.PassThrough()
 
         const promise = lib.readBody(passThroughStream)
@@ -129,7 +150,6 @@ describe('s3/client.mjs', () => {
   describe('#readCompressedBody', () => {
     context('when file is NOT gzipped', () => {
       it('it should return its content as is', async () => {
-        const stream = await import('node:stream')
         const passThroughStream = new stream.PassThrough()
 
         const promise = lib.readCompressedBody(passThroughStream)
@@ -146,7 +166,6 @@ describe('s3/client.mjs', () => {
 
     context('when file is gzipped', () => {
       it('it should return its content gunzipped', async () => {
-        const stream = await import('node:stream')
         const passThroughStream = new stream.PassThrough()
 
         const promise = lib.readCompressedBody(passThroughStream)

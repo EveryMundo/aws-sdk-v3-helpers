@@ -6,6 +6,8 @@ import {
   ListObjectsV2Command,
 } from '@aws-sdk/client-s3'
 
+import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
+
 export const createS3Helper = (S3ClientClass = S3Client) => ({
   _client: undefined,
   get client () {
@@ -50,9 +52,20 @@ export async function readCompressedBody (streamBody) {
     return buff
   }
 
-  const { asyncGunzip } = await import('../lib/zlib/gunzip.mjs')
-
   return asyncGunzip(buff)
+}
+
+export async function gzipPutParams (params, addGzipSuffix = true) {
+  const gzipPromise = await asynGzip(params.Body)
+
+  params.ContentEncoding = 'gzip'
+  if (addGzipSuffix) {
+    params.Key = `${params.Key}.gz`
+  }
+
+  params.Body = await gzipPromise
+
+  return params
 }
 
 export const s3 = createS3Helper()
@@ -64,6 +77,7 @@ export default {
   s3,
   client: s3,
   createHelper: createS3Helper,
+  gzipPutParams,
   readCompressedBody,
   readBody
 }

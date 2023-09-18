@@ -127,6 +127,25 @@ describe('s3/client.mjs', () => {
         expect(gunzippedBody.toString()).to.equal('hello world!')
       })
     })
+
+    context('when called with second arg false', () => {
+      it('should compress the body, set the header, not change Key', async () => {
+        const params = {
+          Body: Buffer.from('hello world!'),
+          Key: 'test-key'
+        }
+
+        const res = await lib.gzipPutParams(params, false)
+        expect(res).to.have.property('Body')
+        expect(res).to.have.property('ContentEncoding', 'gzip')
+        expect(res).to.have.property('Key', 'test-key')
+        expect(res.Body).to.have.property(0, 31)
+        expect(res.Body).to.have.property(1, 139)
+
+        const gunzippedBody = await asyncGunzip(res.Body)
+        expect(gunzippedBody.toString()).to.equal('hello world!')
+      })
+    })
   })
 
   describe('#readBody', () => {

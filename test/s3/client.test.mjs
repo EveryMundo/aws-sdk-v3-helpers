@@ -3,11 +3,12 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 import { GetObjectCommand, PutObjectCommand, HeadObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { it, describe, beforeEach, afterEach } from 'mocha'
-
+import stream from 'node:stream'
 const context = describe
 // import './test-setup.mjs'
 // import * as lib from '../../lib/s3-client.js'
-import lib from '../../s3/client.mjs'
+import * as lib from '../../s3/client.mjs'
+import { asynGzip } from '../../lib/zlib/gzip.mjs'
 
 describe('s3/client.mjs', () => {
   let box
@@ -121,6 +122,45 @@ describe('s3/client.mjs', () => {
         const res = await promise
         expect(res).to.be.instanceof(Buffer)
         expect(res.toString()).to.equal('hello world!')
+      })
+    })
+  })
+
+  describe('#readCompressedBody', () => {
+    context('when file is NOT gzipped', () => {
+      it('it should return its content as is', async () => {
+        const stream = await import('node:stream')
+        const passThroughStream = new stream.PassThrough()
+
+        const promise = lib.readCompressedBody(passThroughStream)
+
+        passThroughStream.write('hello ')
+        passThroughStream.write('world')
+        passThroughStream.end('!')
+
+        const res = await promise
+        expect(res).to.be.instanceof(Buffer)
+        expect(res.toString()).to.equal('hello world!')
+      })
+    })
+
+    context('when file is gzipped', () => {
+      it('it should return its content gunzipped', async () => {
+        const stream = await import('node:stream')
+        const passThroughStream = new stream.PassThrough()
+
+        const promise = lib.readCompressedBody(passThroughStream)
+        const phrase = 'hello world!'
+        const buff = await asynGzip(Buffer.from(phrase))
+        expect(buff).to.have.lengthOf(32)
+
+        passThroughStream.write(buff.subarray(0, 10))
+        passThroughStream.write(buff.subarray(10, 20))
+        passThroughStream.end(buff.subarray(20))
+
+        const res = await promise
+        expect(res).to.be.instanceof(Buffer)
+        expect(res.toString()).to.equal(phrase)
       })
     })
   })

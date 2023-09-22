@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/EveryMundo/aws-sdk-v3-helpers#readme",
   "devDependencies": {
+    "@aws-sdk/client-kinesis": "^3.414.0",
     "@aws-sdk/client-s3": "^3.405.0",
     "@aws-sdk/client-sns": "^3.405.0",
     "@aws-sdk/client-sqs": "^3.405.0",

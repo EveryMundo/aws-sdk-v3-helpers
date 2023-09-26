@@ -57,7 +57,7 @@ describe('lambda/client.mjs', () => {
     })
   })
 
-  describe('#pdateFunctionConfiguration', () => {
+  describe('#updateFunctionConfiguration', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
@@ -65,7 +65,7 @@ describe('lambda/client.mjs', () => {
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
 
-        await o.pdateFunctionConfiguration(params)
+        await o.updateFunctionConfiguration(params)
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(UpdateFunctionConfigurationCommand)

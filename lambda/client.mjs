@@ -18,7 +18,7 @@ export const createHelper = (LambdaClientClass = LambdaClient) => ({
     return this.client.send(new GetFunctionConfigurationCommand(params))
   },
 
-  pdateFunctionConfiguration (params) {
+  updateFunctionConfiguration (params) {
     return this.client.send(new UpdateFunctionConfigurationCommand(params))
   }
 })

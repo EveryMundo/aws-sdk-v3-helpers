@@ -6,10 +6,10 @@ import { it, describe, beforeEach, afterEach } from 'mocha'
 import stream from 'node:stream'
 const context = describe
 // import './test-setup.mjs'
-// import * as lib from '../../lib/s3-client.js'
+
 import * as lib from '../../s3/client.mjs'
 import { asynGzip, asyncGunzip } from '../../lib/zipper.mjs'
-import exp from 'node:constants'
+
 
 describe('s3/client.mjs', () => {
   let box
@@ -24,18 +24,18 @@ describe('s3/client.mjs', () => {
   describe('#client', () => {
     context('Before the first call', () => {
       it('should have _client as undefined', async () => {
-        const s3 = lib.createS3Helper()
-        expect(s3._client).to.be.undefined
+        const o = lib.createHelper()
+        expect(o._client).to.be.undefined
       })
     })
 
     context('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
-        const s3 = lib.createS3Helper(TestClass)
-        const client = s3.client
+        const o = lib.createHelper(TestClass)
+        const client = o.client
         expect(client).to.instanceof(TestClass)
-        expect(s3._client).to.equal(client)
+        expect(o._client).to.equal(client)
       })
     })
   })
@@ -43,12 +43,12 @@ describe('s3/client.mjs', () => {
   describe('#getObject', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const s3 = lib.createS3Helper()
-        const client = s3.client
+        const o = lib.createHelper()
+        const client = o.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
 
-        await s3.getObject(params)
+        await o.getObject(params)
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(GetObjectCommand)
@@ -60,12 +60,12 @@ describe('s3/client.mjs', () => {
   describe('#putObject', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const s3 = lib.createS3Helper()
-        const client = s3.client
+        const o = lib.createHelper()
+        const client = o.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
 
-        await s3.putObject(params)
+        await o.putObject(params)
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(PutObjectCommand)
@@ -77,12 +77,12 @@ describe('s3/client.mjs', () => {
   describe('#headObject', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const s3 = lib.createS3Helper()
-        const client = s3.client
+        const o = lib.createHelper()
+        const client = o.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
 
-        await s3.headObject(params)
+        await o.headObject(params)
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(HeadObjectCommand)
@@ -94,12 +94,12 @@ describe('s3/client.mjs', () => {
   describe('#listObjectsV2', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const s3 = lib.createS3Helper()
-        const client = s3.client
+        const o = lib.createHelper()
+        const client = o.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
 
-        await s3.listObjectsV2(params)
+        await o.listObjectsV2(params)
         expect(stub.calledOnce).to.be.true
         const [firstInvocationArgs] = stub.args
         expect(firstInvocationArgs[0]).to.be.instanceof(ListObjectsV2Command)

@@ -4,8 +4,6 @@ import {
   PutRecordsCommand
 } from '@aws-sdk/client-kinesis'
 
-import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
-
 export const createHelper = (KinesisClientClass = KinesisClient) => ({
   _client: undefined,
   get client () {

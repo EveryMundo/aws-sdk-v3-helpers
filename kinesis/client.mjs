@@ -4,7 +4,7 @@ import {
   PutRecordsCommand
 } from '@aws-sdk/client-kinesis'
 
-export const createHelper = (KinesisClientClass = KinesisClient) => ({
+export const createHelper = (region = process.env.AWS_REGION, KinesisClientClass = KinesisClient) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {

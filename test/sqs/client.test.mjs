@@ -20,7 +20,7 @@ describe('sqs/client.mjs', () => {
   describe('#client', () => {
     context('Before the first call', () => {
       it('should have _client as undefined', async () => {
-        const sqs = lib.createSQSHelper()
+        const sqs = lib.createHelper()
         expect(sqs._client).to.be.undefined
       })
     })
@@ -28,7 +28,7 @@ describe('sqs/client.mjs', () => {
     context('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
-        const sqs = lib.createSQSHelper(TestClass)
+        const sqs = lib.createHelper(undefined, TestClass)
         const client = sqs.client
         expect(client).to.instanceof(TestClass)
         expect(sqs._client).to.equal(client)
@@ -39,7 +39,7 @@ describe('sqs/client.mjs', () => {
   describe('#sendMessageBatch', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const sqs = lib.createSQSHelper()
+        const sqs = lib.createHelper()
         const client = sqs.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }
@@ -56,7 +56,7 @@ describe('sqs/client.mjs', () => {
   describe('#sendMessage', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
-        const sqs = lib.createSQSHelper()
+        const sqs = lib.createHelper()
         const client = sqs.client
         const stub = box.stub(client, 'send')
         const params = { some: 'params' }

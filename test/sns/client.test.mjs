@@ -28,7 +28,7 @@ describe('sns/client.mjs', () => {
     context('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
-        const sns = lib.createHelper(TestClass)
+        const sns = lib.createHelper(undefined, TestClass)
         const client = sns.client
         expect(client).to.instanceof(TestClass)
         expect(sns._client).to.equal(client)

@@ -1,6 +1,6 @@
 import { SQSClient, SendMessageCommand, SendMessageBatchCommand } from '@aws-sdk/client-sqs'
 
-export const createHelper = (SQSClientClass = SQSClient, region = process.env.AWS_REGION) => ({
+export const createHelper = (region = process.env.AWS_REGION, SQSClientClass = SQSClient) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {

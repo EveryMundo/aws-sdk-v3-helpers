@@ -32,7 +32,7 @@ describe('kinesis/client.mjs', () => {
     context('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
-        const o = lib.createHelper(TestClass)
+        const o = lib.createHelper(undefined, TestClass)
         const client = o.client
         expect(client).to.instanceof(TestClass)
         expect(o._client).to.equal(client)

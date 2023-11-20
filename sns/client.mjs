@@ -1,6 +1,6 @@
 import { SNSClient, PublishCommand, PublishBatchCommand } from '@aws-sdk/client-sns'
 
-const createHelper = (SNSClientClass = SNSClient, region = process.env.AWS_REGION) => ({
+const createHelper = (region = process.env.AWS_REGION, SNSClientClass = SNSClient) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {

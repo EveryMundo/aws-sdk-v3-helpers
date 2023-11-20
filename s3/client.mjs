@@ -8,7 +8,7 @@ import {
 
 import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
 
-export const createHelper = (S3ClientClass = S3Client, region = process.env.AWS_REGION) => ({
+export const createHelper = (region = process.env.AWS_REGION, S3ClientClass = S3Client) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {

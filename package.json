@@ -23,14 +23,14 @@
   },
   "homepage": "https://github.com/EveryMundo/aws-sdk-v3-helpers#readme",
   "devDependencies": {
-    "@aws-sdk/client-kinesis": "^3.418.0",
-    "@aws-sdk/client-lambda": "^3.418.0",
-    "@aws-sdk/client-s3": "^3.418.0",
-    "@aws-sdk/client-sns": "^3.418.0",
-    "@aws-sdk/client-sqs": "^3.418.0",
+    "@aws-sdk/client-kinesis": "^3.454.0",
+    "@aws-sdk/client-lambda": "^3.454.0",
+    "@aws-sdk/client-s3": "^3.454.0",
+    "@aws-sdk/client-sns": "^3.454.0",
+    "@aws-sdk/client-sqs": "^3.454.0",
     "c8": "^8.0.1",
-    "chai": "^4.3.8",
+    "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "sinon": "^16.0.0"
+    "sinon": "^17.0.1"
   }
 }

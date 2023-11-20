@@ -1,10 +1,10 @@
 import { SQSClient, SendMessageCommand, SendMessageBatchCommand } from '@aws-sdk/client-sqs'
 
-export const createSQSHelper = (SQSClientClass = SQSClient) => ({
+export const createHelper = (SQSClientClass = SQSClient, region = process.env.AWS_REGION) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {
-      this._client = new SQSClientClass({ region: process.env.AWS_REGION })
+      this._client = new SQSClientClass({ region })
     }
 
     return this._client
@@ -19,13 +19,13 @@ export const createSQSHelper = (SQSClientClass = SQSClient) => ({
   }
 })
 
-export const sqs = createSQSHelper()
+export const sqs = createHelper()
 export const client = sqs
-export const createHelper = createSQSHelper
+export const createSQSHelper = createHelper
 
 export default {
   createSQSHelper,
   sqs,
-  client: sqs,
-  createHelper: createSQSHelper
+  client,
+  createHelper
 }

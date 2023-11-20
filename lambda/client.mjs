@@ -4,11 +4,11 @@ import {
   UpdateFunctionConfigurationCommand
 } from '@aws-sdk/client-lambda'
 
-export const createHelper = (LambdaClientClass = LambdaClient) => ({
+export const createHelper = (LambdaClientClass = LambdaClient, region = process.env.AWS_REGION) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {
-      this._client = new LambdaClientClass({ region: process.env.AWS_REGION })
+      this._client = new LambdaClientClass({ region })
     }
 
     return this._client

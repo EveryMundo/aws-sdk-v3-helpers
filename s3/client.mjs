@@ -8,11 +8,11 @@ import {
 
 import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
 
-export const createS3Helper = (S3ClientClass = S3Client) => ({
+export const createHelper = (S3ClientClass = S3Client, region = process.env.AWS_REGION) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {
-      this._client = new S3ClientClass({ region: process.env.AWS_REGION })
+      this._client = new S3ClientClass({ region })
     }
 
     return this._client
@@ -68,15 +68,15 @@ export async function gzipPutParams (params, addGzipSuffix = true) {
   return params
 }
 
-export const s3 = createS3Helper()
+export const s3 = createHelper()
 export const client = s3
-export const createHelper = createS3Helper
+export const createS3Helper = createHelper
 
 export default {
-  createS3Helper,
+  createS3Helper: createHelper,
   s3,
   client: s3,
-  createHelper: createS3Helper,
+  createHelper,
   gzipPutParams,
   readCompressedBody,
   readBody

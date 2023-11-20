@@ -1,10 +1,10 @@
 import { SNSClient, PublishCommand, PublishBatchCommand } from '@aws-sdk/client-sns'
 
-const createSNSHelper = (SNSClientClass = SNSClient) => ({
+const createHelper = (SNSClientClass = SNSClient, region = process.env.AWS_REGION) => ({
   _client: undefined,
   get client () {
     if (this._client == null) {
-      this._client = new SNSClientClass({ region: process.env.AWS_REGION })
+      this._client = new SNSClientClass({ region })
     }
 
     return this._client
@@ -19,13 +19,13 @@ const createSNSHelper = (SNSClientClass = SNSClient) => ({
   }
 })
 
-export const sns = createSNSHelper()
+export const sns = createHelper()
 export const client = sns
-export const createHelper = createSNSHelper
+export const createSNSHelper = createHelper
 
 export default {
   createSNSHelper,
   sns,
-  client: sns,
-  createHelper: createSNSHelper
+  client,
+  createHelper
 }

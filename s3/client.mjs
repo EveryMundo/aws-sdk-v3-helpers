@@ -1,9 +1,10 @@
 import {
   S3Client,
+  DeleteObjectsCommand,
   GetObjectCommand,
-  PutObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
+  PutObjectCommand,
 } from '@aws-sdk/client-s3'
 
 import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
@@ -28,6 +29,10 @@ export const createHelper = (region = process.env.AWS_REGION, S3ClientClass = S3
 
   headObject (params) {
     return this.client.send(new HeadObjectCommand(params))
+  },
+
+  deleteObjects (params) {
+    return this.client.send(new DeleteObjectsCommand(params))
   },
 
   listObjectsV2 (params) {

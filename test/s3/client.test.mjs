@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { GetObjectCommand, PutObjectCommand, HeadObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import {
+  DeleteObjectsCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+} from '@aws-sdk/client-s3'
 import { it, describe, beforeEach, afterEach } from 'mocha'
 import stream from 'node:stream'
 const context = describe
@@ -22,14 +28,14 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#client', () => {
-    context('Before the first call', () => {
+    describe('Before the first call', () => {
       it('should have _client as undefined', async () => {
         const o = lib.createHelper()
         expect(o._client).to.be.undefined
       })
     })
 
-    context('Aefore the first call', () => {
+    describe('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
         const o = lib.createHelper(undefined, TestClass)
@@ -41,7 +47,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#getObject', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -58,7 +64,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#putObject', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -74,8 +80,25 @@ describe('s3/client.mjs', () => {
     })
   })
 
+  describe('#deleteObjects', () => {
+    describe('when called with VALID argument', () => {
+      it('should call client.send with the correct arguments', async () => {
+        const o = lib.createHelper()
+        const client = o.client
+        const stub = box.stub(client, 'send')
+        const params = { some: 'params' }
+
+        await o.deleteObjects(params)
+        expect(stub.calledOnce).to.be.true
+        const [firstInvocationArgs] = stub.args
+        expect(firstInvocationArgs[0]).to.be.instanceof(DeleteObjectsCommand)
+        expect(firstInvocationArgs[0].input).to.deep.equal(params)
+      })
+    })
+  })
+
   describe('#headObject', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -92,7 +115,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#listObjectsV2', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -109,7 +132,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#gzipPutParams', () => {
-    context('when called with a single argument', () => {
+    describe('when called with a single argument', () => {
       it('should compress the body, set the header, add .gz to Key', async () => {
         const params = {
           Body: Buffer.from('hello world!'),
@@ -128,7 +151,7 @@ describe('s3/client.mjs', () => {
       })
     })
 
-    context('when called with second arg false', () => {
+    describe('when called with second arg false', () => {
       it('should compress the body, set the header, not change Key', async () => {
         const params = {
           Body: Buffer.from('hello world!'),
@@ -149,7 +172,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#readBody', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should read the stream', async () => {
         const passThroughStream = new stream.PassThrough()
 
@@ -167,7 +190,7 @@ describe('s3/client.mjs', () => {
   })
 
   describe('#readCompressedBody', () => {
-    context('when file is NOT gzipped', () => {
+    describe('when file is NOT gzipped', () => {
       it('it should return its content as is', async () => {
         const passThroughStream = new stream.PassThrough()
 
@@ -183,7 +206,7 @@ describe('s3/client.mjs', () => {
       })
     })
 
-    context('when file is gzipped', () => {
+    describe('when file is gzipped', () => {
       it('it should return its content gunzipped', async () => {
         const passThroughStream = new stream.PassThrough()
 

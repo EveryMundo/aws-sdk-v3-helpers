@@ -14,7 +14,7 @@ const context = describe
 // import './test-setup.mjs'
 
 import * as lib from '../../s3/client.mjs'
-import { asynGzip, asyncGunzip } from '../../lib/zipper.mjs'
+import { asyncGzip, asyncGunzip } from '../../lib/zipper.mjs'
 
 
 describe('s3/client.mjs', () => {
@@ -212,7 +212,7 @@ describe('s3/client.mjs', () => {
 
         const promise = lib.readCompressedBody(passThroughStream)
         const phrase = 'hello world!'
-        const buff = await asynGzip(Buffer.from(phrase))
+        const buff = await asyncGzip(Buffer.from(phrase))
         expect(buff).to.have.lengthOf(32)
 
         passThroughStream.write(buff.subarray(0, 10))

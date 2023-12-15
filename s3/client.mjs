@@ -7,7 +7,7 @@ import {
   PutObjectCommand,
 } from '@aws-sdk/client-s3'
 
-import { asyncGunzip, asynGzip } from '../lib/zipper.mjs'
+import { asyncGunzip, asyncGzip } from '../lib/zipper.mjs'
 
 export const createHelper = (region = process.env.AWS_REGION, S3ClientClass = S3Client) => ({
   _client: undefined,
@@ -61,7 +61,7 @@ export async function readCompressedBody (streamBody) {
 }
 
 export async function gzipPutParams (params, addGzipSuffix = true) {
-  const gzipPromise = await asynGzip(params.Body)
+  const gzipPromise = await asyncGzip(params.Body)
 
   params.ContentEncoding = 'gzip'
   if (addGzipSuffix) {

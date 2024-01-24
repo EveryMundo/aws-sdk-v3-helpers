@@ -3,6 +3,7 @@ import { it, describe, beforeEach, afterEach } from 'mocha'
 import { expect } from 'chai'
 import sinon from 'sinon'
 import {
+  InvokeCommand,
   GetFunctionConfigurationCommand,
   UpdateFunctionConfigurationCommand
 } from '@aws-sdk/client-lambda'
@@ -40,6 +41,37 @@ describe('lambda/client.mjs', () => {
     })
   })
 
+  describe('#invoke', () => {
+    context('when called with VALID argument', () => {
+      it('should call client.send with the correct arguments', async () => {
+        const o = lib.createHelper()
+        const client = o.client
+        const stub = box.stub(client, 'send')
+        const params = { some: 'params' }
+
+        await o.invoke(params)
+        expect(stub.calledOnce).to.be.true
+        const [firstInvocationArgs] = stub.args
+        expect(firstInvocationArgs[0]).to.be.instanceof(InvokeCommand)
+        expect(firstInvocationArgs[0].input).to.deep.equal(params)
+      })
+    })
+
+    context('when called with VALID argument and payload', () => {
+      it('should call client.send with the correct arguments', async () => {
+        const o = lib.createHelper()
+        const client = o.client
+        const stub = box.stub(client, 'send')
+        const params = { some: 'params' }
+        const payload = { some: 'payload' }
+
+        await o.invoke(params, payload)
+        expect(stub.calledOnce).to.be.true
+        const [firstInvocationArgs] = stub.args
+        expect(firstInvocationArgs[0]).to.be.instanceof(InvokeCommand)
+      })
+    })
+  })
   describe('#getFunctionConfiguration', () => {
     context('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {

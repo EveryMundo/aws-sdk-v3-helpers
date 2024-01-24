@@ -1,5 +1,6 @@
 import {
   LambdaClient,
+  InvokeCommand,
   GetFunctionConfigurationCommand,
   UpdateFunctionConfigurationCommand
 } from '@aws-sdk/client-lambda'
@@ -12,6 +13,10 @@ export const createHelper = (region = process.env.AWS_REGION, LambdaClientClass 
     }
 
     return this._client
+  },
+
+  invoke (params) {
+    return this.client.send(new InvokeCommand(params))
   },
 
   getFunctionConfiguration (params) {

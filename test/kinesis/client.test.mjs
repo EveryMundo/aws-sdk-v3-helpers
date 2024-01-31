@@ -6,10 +6,10 @@ import {
   PutRecordCommand,
   PutRecordsCommand
 } from '@aws-sdk/client-kinesis'
-
-const context = describe
 // import './test-setup.mjs'
 import * as lib from '../../kinesis/client.mjs'
+
+const context = describe
 
 describe('kinesis/client.mjs', () => {
   let box

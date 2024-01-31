@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
@@ -18,14 +19,14 @@ describe('sqs/client.mjs', () => {
   })
 
   describe('#client', () => {
-    context('Before the first call', () => {
+    describe('Before the first call', () => {
       it('should have _client as undefined', async () => {
         const sqs = lib.createHelper()
         expect(sqs._client).to.be.undefined
       })
     })
 
-    context('Aefore the first call', () => {
+    describe('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
         const sqs = lib.createHelper(undefined, TestClass)
@@ -37,7 +38,7 @@ describe('sqs/client.mjs', () => {
   })
 
   describe('#sendMessageBatch', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const sqs = lib.createHelper()
         const client = sqs.client
@@ -54,7 +55,7 @@ describe('sqs/client.mjs', () => {
   })
 
   describe('#sendMessage', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const sqs = lib.createHelper()
         const client = sqs.client

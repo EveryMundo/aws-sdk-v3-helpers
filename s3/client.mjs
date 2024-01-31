@@ -4,42 +4,39 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  PutObjectCommand,
+  PutObjectCommand
 } from '@aws-sdk/client-s3'
 
 import { asyncGunzip, asyncGzip } from '../lib/zipper.mjs'
+import { AWSHelper } from '../lib/classes/AWSHelper.class.mjs'
 
-export const createHelper = (region = process.env.AWS_REGION, S3ClientClass = S3Client) => ({
-  _client: undefined,
-  get client () {
-    if (this._client == null) {
-      this._client = new S3ClientClass({ region })
-    }
+export const createHelper = (region, ClientClass) => new S3Helper(region, ClientClass)
 
-    return this._client
-  },
+export class S3Helper extends AWSHelper {
+  constructor (region = process.env.AWS_REGION, ClientClass = S3Client) {
+    super(region, ClientClass)
+  }
 
   getObject (params) {
-    return this.client.send(new GetObjectCommand(params))
-  },
+    return this._client.send(new GetObjectCommand(params))
+  }
 
   putObject (params) {
-    return this.client.send(new PutObjectCommand(params))
-  },
+    return this._client.send(new PutObjectCommand(params))
+  }
 
   headObject (params) {
-    return this.client.send(new HeadObjectCommand(params))
-  },
+    return this._client.send(new HeadObjectCommand(params))
+  }
 
   deleteObjects (params) {
-    return this.client.send(new DeleteObjectsCommand(params))
-  },
+    return this._client.send(new DeleteObjectsCommand(params))
+  }
 
   listObjectsV2 (params) {
-    return this.client.send(new ListObjectsV2Command(params))
+    return this._client.send(new ListObjectsV2Command(params))
   }
-})
-
+}
 
 export async function readBody (streamBody) {
   let buff = Buffer.from('')
@@ -53,7 +50,7 @@ export async function readBody (streamBody) {
 
 export async function readCompressedBody (streamBody) {
   const buff = await readBody(streamBody)
-  if (buff[0] != 31 || buff[1] != 139) {
+  if (buff[0] !== 31 || buff[1] !== 139) {
     return buff
   }
 
@@ -75,10 +72,10 @@ export async function gzipPutParams (params, addGzipSuffix = true) {
 
 export const s3 = createHelper()
 export const client = s3
-export const createS3Helper = createHelper
+// export const createS3Helper = createHelper
 
 export default {
-  createS3Helper: createHelper,
+  // createS3Helper: createHelper,
   s3,
   client: s3,
   createHelper,

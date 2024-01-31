@@ -1,23 +1,22 @@
 import { SNSClient, PublishCommand, PublishBatchCommand } from '@aws-sdk/client-sns'
 
-const createHelper = (region = process.env.AWS_REGION, SNSClientClass = SNSClient) => ({
-  _client: undefined,
-  get client () {
-    if (this._client == null) {
-      this._client = new SNSClientClass({ region })
-    }
+import { AWSHelper } from '../lib/classes/AWSHelper.class.mjs'
 
-    return this._client
-  },
+export class SNSHelper extends AWSHelper {
+  constructor (region = process.env.AWS_REGION, ClientClass = SNSClient) {
+    super(region, ClientClass)
+  }
 
   publishBatch (params) {
-    return this.client.send(new PublishBatchCommand(params))
-  },
+    return this._client.send(new PublishBatchCommand(params))
+  }
 
   publish (params) {
-    return this.client.send(new PublishCommand(params))
+    return this._client.send(new PublishCommand(params))
   }
-})
+}
+
+const createHelper = (region, ClientClass) => new SNSHelper(region, ClientClass)
 
 export const sns = createHelper()
 export const client = sns

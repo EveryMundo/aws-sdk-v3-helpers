@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
@@ -6,20 +7,20 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  PutObjectCommand,
+  PutObjectCommand
 } from '@aws-sdk/client-s3'
 import { it, describe, beforeEach, afterEach } from 'mocha'
 import stream from 'node:stream'
-const context = describe
 // import './test-setup.mjs'
 
 import * as lib from '../../s3/client.mjs'
 import { asyncGzip, asyncGunzip } from '../../lib/zipper.mjs'
 
-
 describe('s3/client.mjs', () => {
-  let box
-  beforeEach(() => { box = sinon.createSandbox() })
+  const box = sinon.createSandbox()
+  beforeEach(() => {
+    // box = sinon.createSandbox()
+  })
 
   afterEach(() => { box.restore() })
 
@@ -42,6 +43,32 @@ describe('s3/client.mjs', () => {
         const client = o.client
         expect(client).to.instanceof(TestClass)
         expect(o._client).to.equal(client)
+      })
+    })
+
+    describe('when process.env.AWS_ENDPOINT is set', () => {
+      beforeEach(() => {
+        if (process.env.AWS_ENDPOINT == null) process.env.AWS_ENDPOINT = ''
+        box.stub(process.env, 'AWS_ENDPOINT').value('http://localhost:4566')
+      })
+
+      it('should use it as the endpoint', async () => {
+        const { client } = lib.createHelper()
+        expect(client.config.endpoint).to.be.instanceof(Function)
+        expect(client.config).to.have.property('isCustomEndpoint', true)
+      })
+    })
+
+    describe('when process.env.AWS_ENDPOINT is NOT set', () => {
+      beforeEach(() => {
+        delete process.env.AWS_ENDPOINT
+      })
+
+      it('should use it as the endpoint', async () => {
+        const o = lib.createHelper()
+        const { client } = o
+        expect(client.config.endpoint).to.be.undefined
+        expect(client.config).to.have.property('isCustomEndpoint', false)
       })
     })
   })

@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 import { it, describe, beforeEach, afterEach } from 'mocha'
 import { expect } from 'chai'
@@ -7,8 +8,6 @@ import {
   GetFunctionConfigurationCommand,
   UpdateFunctionConfigurationCommand
 } from '@aws-sdk/client-lambda'
-
-const context = describe
 // import './test-setup.mjs'
 import * as lib from '../../lambda/client.mjs'
 
@@ -23,14 +22,14 @@ describe('lambda/client.mjs', () => {
   })
 
   describe('#client', () => {
-    context('Before the first call', () => {
+    describe('Before the first call', () => {
       it('should have _client as undefined', async () => {
         const o = lib.createHelper()
         expect(o._client).to.be.undefined
       })
     })
 
-    context('Aefore the first call', () => {
+    describe('Aefore the first call', () => {
       it('should be an instance of the input class', async () => {
         class TestClass {}
         const o = lib.createHelper(undefined, TestClass)
@@ -42,7 +41,7 @@ describe('lambda/client.mjs', () => {
   })
 
   describe('#invoke', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -57,7 +56,7 @@ describe('lambda/client.mjs', () => {
       })
     })
 
-    context('when called with VALID argument and payload', () => {
+    describe('when called with VALID argument and payload', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -73,7 +72,7 @@ describe('lambda/client.mjs', () => {
     })
   })
   describe('#getFunctionConfiguration', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client
@@ -90,7 +89,7 @@ describe('lambda/client.mjs', () => {
   })
 
   describe('#updateFunctionConfiguration', () => {
-    context('when called with VALID argument', () => {
+    describe('when called with VALID argument', () => {
       it('should call client.send with the correct arguments', async () => {
         const o = lib.createHelper()
         const client = o.client

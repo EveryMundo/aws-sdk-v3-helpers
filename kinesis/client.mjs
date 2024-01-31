@@ -4,24 +4,23 @@ import {
   PutRecordsCommand
 } from '@aws-sdk/client-kinesis'
 
-export const createHelper = (region = process.env.AWS_REGION, KinesisClientClass = KinesisClient) => ({
-  _client: undefined,
-  get client () {
-    if (this._client == null) {
-      this._client = new KinesisClientClass({ region: process.env.AWS_REGION })
-    }
+import { AWSHelper } from '../lib/classes/AWSHelper.class.mjs'
 
-    return this._client
-  },
+export const createHelper = (region, ClientClass) => new KinesisHelper(region, ClientClass)
+
+export class KinesisHelper extends AWSHelper {
+  constructor (region = process.env.AWS_REGION, ClientClass = KinesisClient) {
+    super(region, ClientClass)
+  }
 
   putRecord (params) {
-    return this.client.send(new PutRecordCommand(params))
-  },
+    return this._client.send(new PutRecordCommand(params))
+  }
 
   putRecords (params) {
-    return this.client.send(new PutRecordsCommand(params))
+    return this._client.send(new PutRecordsCommand(params))
   }
-})
+}
 
 export const client = createHelper()
 export const createKinesisHelper = createHelper

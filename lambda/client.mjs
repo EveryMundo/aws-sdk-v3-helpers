@@ -5,28 +5,27 @@ import {
   UpdateFunctionConfigurationCommand
 } from '@aws-sdk/client-lambda'
 
-export const createHelper = (region = process.env.AWS_REGION, LambdaClientClass = LambdaClient) => ({
-  _client: undefined,
-  get client () {
-    if (this._client == null) {
-      this._client = new LambdaClientClass({ region })
-    }
+import { AWSHelper } from '../lib/classes/AWSHelper.class.mjs'
 
-    return this._client
-  },
+export const createHelper = (region, ClientClass) => new LambdaHelper(region, ClientClass)
+
+export class LambdaHelper extends AWSHelper {
+  constructor (region = process.env.AWS_REGION, ClientClass = LambdaClient) {
+    super(region, ClientClass)
+  }
 
   invoke (params) {
-    return this.client.send(new InvokeCommand(params))
-  },
+    return this._client.send(new InvokeCommand(params))
+  }
 
   getFunctionConfiguration (params) {
-    return this.client.send(new GetFunctionConfigurationCommand(params))
-  },
+    return this._client.send(new GetFunctionConfigurationCommand(params))
+  }
 
   updateFunctionConfiguration (params) {
-    return this.client.send(new UpdateFunctionConfigurationCommand(params))
+    return this._client.send(new UpdateFunctionConfigurationCommand(params))
   }
-})
+}
 
 export const client = createHelper()
 

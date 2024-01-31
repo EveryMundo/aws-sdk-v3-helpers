@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai'
 import sinon from 'sinon'
@@ -57,7 +58,7 @@ describe('s3/uploader.mjs', () => {
     })
 
     describe('#uploadPart', () => {
-      context('When instance.uploadId is falsy', () => {
+      describe('When instance.uploadId is falsy', () => {
         it('should call send twice, with CreateMultipartUploadCommand then UploadPartCommand', async () => {
           const res = await instance.uploadPart()
           expect(res).to.have.property('UploadId', 'test-upload-id')
@@ -67,7 +68,7 @@ describe('s3/uploader.mjs', () => {
           expect(secondInvocationArgs[0]).to.be.instanceof(UploadPartCommand)
         })
 
-        context('when CreateMultipartUpload throws one', () => {
+        describe('when CreateMultipartUpload throws one', () => {
           it('should throw an error', async () => {
             instance.s3Client.send.onCall(0).throws(new Error('test error'))
             const res = await instance.uploadPart().catch(err => err)
@@ -76,7 +77,7 @@ describe('s3/uploader.mjs', () => {
         })
       })
 
-      context('When instance.uploadId is falsy', () => {
+      describe('When instance.uploadId is falsy', () => {
         it('should call send once with UploadPartCommand', async () => {
           instance.uploadId = 'test-upload-id'
           const res = await instance.uploadPart()
@@ -97,7 +98,7 @@ describe('s3/uploader.mjs', () => {
     })
 
     describe('#abortMultipartUpload', () => {
-      context('When instance.uploadId is falsy', () => {
+      describe('When instance.uploadId is falsy', () => {
         it('should return undefined', async () => {
           const res = await instance.abortMultipartUpload()
           expect(res).to.be.undefined
@@ -105,7 +106,7 @@ describe('s3/uploader.mjs', () => {
         })
       })
 
-      context('When instance.uploadId is valid', () => {
+      describe('When instance.uploadId is valid', () => {
         it('should call abortMultipartUpload once with a AbortMultipartUploadCommand', async () => {
           instance.uploadId = 'test-upload-id'
           const res = await instance.abortMultipartUpload()
@@ -119,7 +120,7 @@ describe('s3/uploader.mjs', () => {
     // describe('#initialize')
   })
 
-  context('A brand new instance', () => {
+  describe('A brand new instance', () => {
     const bucketName = 'test-bucket'
     const key = 'test-key'
     const s3Client = {}

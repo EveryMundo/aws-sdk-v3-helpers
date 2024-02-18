@@ -15,15 +15,15 @@ export class LambdaHelper extends AWSHelper {
   }
 
   invoke (params) {
-    return this._client.send(new InvokeCommand(params))
+    return this.client.send(new InvokeCommand(params))
   }
 
   getFunctionConfiguration (params) {
-    return this._client.send(new GetFunctionConfigurationCommand(params))
+    return this.client.send(new GetFunctionConfigurationCommand(params))
   }
 
   updateFunctionConfiguration (params) {
-    return this._client.send(new UpdateFunctionConfigurationCommand(params))
+    return this.client.send(new UpdateFunctionConfigurationCommand(params))
   }
 }
 

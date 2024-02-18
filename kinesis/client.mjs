@@ -14,11 +14,11 @@ export class KinesisHelper extends AWSHelper {
   }
 
   putRecord (params) {
-    return this._client.send(new PutRecordCommand(params))
+    return this.client.send(new PutRecordCommand(params))
   }
 
   putRecords (params) {
-    return this._client.send(new PutRecordsCommand(params))
+    return this.client.send(new PutRecordsCommand(params))
   }
 }
 

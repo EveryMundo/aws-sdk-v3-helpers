@@ -10,11 +10,11 @@ export class SQSHelper extends AWSHelper {
   }
 
   sendMessageBatch (params) {
-    return this._client.send(new SendMessageBatchCommand(params))
+    return this.client.send(new SendMessageBatchCommand(params))
   }
 
   sendMessage (params) {
-    return this._client.send(new SendMessageCommand(params))
+    return this.client.send(new SendMessageCommand(params))
   }
 }
 

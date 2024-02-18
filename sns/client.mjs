@@ -8,11 +8,11 @@ export class SNSHelper extends AWSHelper {
   }
 
   publishBatch (params) {
-    return this._client.send(new PublishBatchCommand(params))
+    return this.client.send(new PublishBatchCommand(params))
   }
 
   publish (params) {
-    return this._client.send(new PublishCommand(params))
+    return this.client.send(new PublishCommand(params))
   }
 }
 

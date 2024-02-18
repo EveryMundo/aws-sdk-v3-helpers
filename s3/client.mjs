@@ -18,23 +18,23 @@ export class S3Helper extends AWSHelper {
   }
 
   getObject (params) {
-    return this._client.send(new GetObjectCommand(params))
+    return this.client.send(new GetObjectCommand(params))
   }
 
   putObject (params) {
-    return this._client.send(new PutObjectCommand(params))
+    return this.client.send(new PutObjectCommand(params))
   }
 
   headObject (params) {
-    return this._client.send(new HeadObjectCommand(params))
+    return this.client.send(new HeadObjectCommand(params))
   }
 
   deleteObjects (params) {
-    return this._client.send(new DeleteObjectsCommand(params))
+    return this.client.send(new DeleteObjectsCommand(params))
   }
 
   listObjectsV2 (params) {
-    return this._client.send(new ListObjectsV2Command(params))
+    return this.client.send(new ListObjectsV2Command(params))
   }
 }
 

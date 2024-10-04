@@ -114,3 +114,4 @@ test
 *.tar.gz
 *.tgz
 *.zip
+*.ts
